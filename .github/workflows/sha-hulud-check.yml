@@ -1,0 +1,45 @@
+name: NPM Supply Chain Security Check
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  schedule:
+    # Run every hour to catch newly discovered malicious packages
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    name: Scan for malicious packages
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: '**/package-lock.json'
+    
+    - name: Download NPM Supply Chain Scanner
+      run: |
+        curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/npm-supply-chain-scanner/main/check-malicious.js -o check-malicious.js
+        chmod +x check-malicious.js
+    
+    - name: Run malicious package scan
+      run: node check-malicious.js
+      
+    - name: Upload scan results
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: malicious-packages-report
+        path: |
+          package.json
+          package-lock.json
+          yarn.lock

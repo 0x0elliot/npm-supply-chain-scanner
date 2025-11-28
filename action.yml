@@ -1,0 +1,48 @@
+name: 'NPM Supply Chain Scanner'
+description: 'Comprehensive security scanner for npm dependencies - detects malicious packages in your supply chain'
+author: 'Your Name'
+
+branding:
+  icon: 'shield'
+  color: 'red'
+
+inputs:
+  generate-lock-files:
+    description: 'Generate lock files if they do not exist'
+    required: false
+    default: 'true'
+  
+  fail-on-detection:
+    description: 'Fail the action if malicious packages are detected'
+    required: false
+    default: 'true'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Run NPM Supply Chain scan
+      shell: bash
+      run: |
+        # Download and run the detector
+        curl -sSL https://raw.githubusercontent.com/${{ github.repository }}/main/check-malicious.js -o /tmp/check-malicious.js
+        
+        # Set environment variable for lock file generation
+        if [[ "${{ inputs.generate-lock-files }}" == "false" ]]; then
+          export SKIP_LOCK_GENERATION=1
+        fi
+        
+        # Run the scan
+        node /tmp/check-malicious.js
+        
+        # Handle exit code based on input
+        EXIT_CODE=$?
+        if [[ $EXIT_CODE -ne 0 && "${{ inputs.fail-on-detection }}" == "false" ]]; then
+          echo "⚠️ Malicious packages detected but not failing the action"
+          exit 0
+        fi
+        exit $EXIT_CODE

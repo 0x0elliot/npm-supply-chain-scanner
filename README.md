@@ -1,14 +1,14 @@
-# 🛡️ NPM Supply Chain Scanner
+# NPM Supply Chain Scanner
 
 Fast, comprehensive security scanner for npm dependencies using the OSV database to detect malicious packages in your supply chain.
 
 ## Features
 
-- ⚡ **Fast**: Uses OSV API batch queries instead of downloading entire database
-- 🔍 **Comprehensive**: Scans all dependencies including transitive ones
-- 🤖 **Automatic**: Generates lock files if missing
-- 📦 **Multi-project**: Scans all package.json files in repository
-- ⏰ **Hourly updates**: OSV database is updated hourly with new threats
+- **Fast**: Uses OSV API batch queries instead of downloading entire database
+- **Comprehensive**: Scans all dependencies including transitive ones
+- **Automatic**: Generates lock files if missing
+- **Multi-project**: Scans all package.json files in repository
+- **Hourly updates**: OSV database is updated hourly with new threats
 
 ## Quick Start
 

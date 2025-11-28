@@ -37,63 +37,6 @@ curl -O https://raw.githubusercontent.com/0x0elliot/npm-supply-chain-scanner/mai
 node check-malicious.js
 ```
 
-### CI Integration
-
-#### GitHub Actions
-```yaml
-name: NPM Supply Chain Security
-
-on:
-  push:
-  pull_request:
-  schedule:
-    - cron: '0 * * * *'  # Check hourly
-
-jobs:
-  scan:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-    
-    - name: NPM Supply Chain Scan
-      run: |
-        curl -sSL https://raw.githubusercontent.com/0x0elliot/npm-supply-chain-scanner/main/check-malicious.js -o check.js
-        node check.js
-```
-
-#### GitLab CI
-```yaml
-malicious-scan:
-  image: node:20
-  script:
-    - curl -sSL https://raw.githubusercontent.com/0x0elliot/npm-supply-chain-scanner/main/check-malicious.js -o check.js
-    - node check.js
-  only:
-    - merge_requests
-    - main
-```
-
-#### CircleCI
-```yaml
-version: 2.1
-jobs:
-  security-scan:
-    docker:
-      - image: cimg/node:20.0
-    steps:
-      - checkout
-      - run:
-          name: NPM Supply Chain Scan
-          command: |
-            curl -sSL https://raw.githubusercontent.com/0x0elliot/npm-supply-chain-scanner/main/check-malicious.js -o check.js
-            node check.js
-```
-
 ## How It Works
 
 1. **Discovers** all `package.json` files in your repository

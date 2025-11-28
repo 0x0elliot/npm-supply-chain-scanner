@@ -28,13 +28,8 @@ runs:
     - name: Run NPM Supply Chain scan
       shell: bash
       run: |
-        # Download and run the detector
-        curl -sSL https://raw.githubusercontent.com/${{ github.repository }}/main/check-malicious.js -o /tmp/check-malicious.js
-        
-        # Set environment variable for lock file generation
-        if [[ "${{ inputs.generate-lock-files }}" == "false" ]]; then
-          export SKIP_LOCK_GENERATION=1
-        fi
+        # Download the scanner script from this action's repository
+        curl -sSL https://raw.githubusercontent.com/0x0elliot/npm-supply-chain-scanner/main/check-malicious.js -o /tmp/check-malicious.js
         
         # Run the scan
         node /tmp/check-malicious.js
@@ -42,7 +37,7 @@ runs:
         # Handle exit code based on input
         EXIT_CODE=$?
         if [[ $EXIT_CODE -ne 0 && "${{ inputs.fail-on-detection }}" == "false" ]]; then
-          echo "⚠️ Malicious packages detected but not failing the action"
+          echo "WARNING: Malicious packages detected but not failing the action"
           exit 0
         fi
         exit $EXIT_CODE

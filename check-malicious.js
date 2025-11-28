@@ -189,15 +189,16 @@ async function queryOSV(packages) {
 }
 
 async function main() {
-    console.log('🛡️  NPM Supply Chain Scanner');
+    console.log('NPM Supply Chain Scanner');
     console.log('━'.repeat(40) + '\n');
     
     // Find all package.json files
     const packageJsonFiles = findPackageJsonFiles(process.cwd());
     
     if (packageJsonFiles.length === 0) {
-        console.error('❌ No package.json files found!');
-        process.exit(1);
+        console.log('No package.json files found in this repository.');
+        console.log('Nothing to scan - exiting successfully.');
+        process.exit(0);
     }
     
     console.log(`Found ${packageJsonFiles.length} package.json file(s)\n`);

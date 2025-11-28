@@ -24,14 +24,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: YOUR_USERNAME/npm-supply-chain-scanner@main
+    - uses: 0x0elliot/npm-supply-chain-scanner@v0.0.2
 ```
 
 ### Local Usage
 
 ```bash
 # Download the script
-curl -O https://raw.githubusercontent.com/YOUR_USERNAME/npm-supply-chain-scanner/main/check-malicious.js
+curl -O https://raw.githubusercontent.com/0x0elliot/npm-supply-chain-scanner/main/check-malicious.js
 
 # Run the scan
 node check-malicious.js
@@ -62,7 +62,7 @@ jobs:
     
     - name: NPM Supply Chain Scan
       run: |
-        curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/npm-supply-chain-scanner/main/check-malicious.js -o check.js
+        curl -sSL https://raw.githubusercontent.com/0x0elliot/npm-supply-chain-scanner/main/check-malicious.js -o check.js
         node check.js
 ```
 
@@ -71,7 +71,7 @@ jobs:
 malicious-scan:
   image: node:20
   script:
-    - curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/npm-supply-chain-scanner/main/check-malicious.js -o check.js
+    - curl -sSL https://raw.githubusercontent.com/0x0elliot/npm-supply-chain-scanner/main/check-malicious.js -o check.js
     - node check.js
   only:
     - merge_requests
@@ -90,7 +90,7 @@ jobs:
       - run:
           name: NPM Supply Chain Scan
           command: |
-            curl -sSL https://raw.githubusercontent.com/YOUR_USERNAME/npm-supply-chain-scanner/main/check-malicious.js -o check.js
+            curl -sSL https://raw.githubusercontent.com/0x0elliot/npm-supply-chain-scanner/main/check-malicious.js -o check.js
             node check.js
 ```
 
